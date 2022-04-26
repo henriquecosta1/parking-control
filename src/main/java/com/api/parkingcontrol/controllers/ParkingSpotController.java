@@ -48,10 +48,12 @@ public class ParkingSpotController {
         } if(parkingSpotService.existsByParkingSpotNumber(parkingSpotDto.getParkingSpotNumber())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflito: Vaga de estacionamento já está em uso!");
 
-        } if(parkingSpotService.existsByApartmentAndBlock(parkingSpotDto.getApartment(), parkingSpotDto.getBlock())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflito: Vaga de estacionamento já está registrada para este apartamento/bloco!");
+        } if(parkingSpotService.existsByApartment(parkingSpotDto.getApartment())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflito: Vaga de estacionamento já está registrada para este apartamento!");
 
-        }        
+        }if (parkingSpotService.existsByBlock(parkingSpotDto.getBlock())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflito: Vaga de estacionamento já está registrada para este bloco!");
+        }
         ParkingSpotModel parkingSpotModel = new ParkingSpotModel();
         BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
         parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
